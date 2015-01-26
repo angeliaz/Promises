@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Promises Demo</title>
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.8.0/jquery.min.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+
+		if(window.Promise){
+		    // console.log('Promise found');   
+
+		    var promise = new Promise(function(resolve,reject){
+		        var request = new XMLHttpRequest();
+
+		        request.open('GET','http://api.icndb.com/jokes/random');
+
+		        request.onload = function(){
+		            if(request.status == 200){
+		            	//reject(Error('Error fetching data'));//错误发生，拒绝Promise
+		                resolve(request.response); //我们在此处获得了数据，因此解析Promise
+		            }else{
+		                reject(Error(request.statusText));//状态码不是200，因此调用reject
+		            }
+		        };
+
+		        request.onerror = function(){
+		            reject(Error('Error fetching data1'));//错误发生，拒绝Promise
+		        };
+
+		        request.send(); //发送请求
+		    });
+
+		    console.log('Asynchronous request made.');  
+
+		    promise.then(function(data){
+		        console.log('Got data! Promise fulfilled.');
+		        //document.getElementByTagName('body')[0].textContent = JSON.parse(data).value.joke;
+		        console.log(promise)
+		        return 1;
+
+		    },function(error){
+		        console.log('Promise rejected:' + error);
+		        //console.log(error.message);
+		        return error
+		        
+		    }).then(function(data) {
+		    	console.log('data:' + data);
+		    	return promise;
+		    	}, function(error) {
+		    		console.log('error')
+		    }).then(function(data) {
+		    	console.log('data3:' + data)
+		    	}, function(error) {
+		    		console.log('error')
+		     });
+
+
+
+		    // promise.then(function(data){
+		    //     console.log('Got data1! Promise fulfilled.');
+		    //     //document.getElementByTagName('body')[0].textContent = JSON.parse(data).value.joke;
+		    //     return data;
+		    // },function(error){
+		    //     console.log('Promise1 rejected:' + error);
+		    //     //console.log(error.message);
+		    //     return error
+		        
+		    // }).then(function(data) {
+		    // 	console.log('data1:' + data)
+		    // 	return 3;
+		    // 	}, function(error) {
+		    // 		console.log('error1')
+		    // }).then(function(data) {
+		    // 	console.log('data4:' + data)
+		    // 	}, function(error) {
+		    // 		console.log('error')
+		    // });
+
+		} else {
+		    console.log('Promise not available');
+		}   
+
+
+
+		// var test = function (key) {
+		// var def = $.Deferred();
+		//   setTimeout(function () {
+		//     def.resolve(key);
+		//   }, 1000);
+		//   return def.promise();
+		// }
+
+
+		// test(3).done(function (key) {
+		//   var key1 = key + 1;
+		//   console.log(key1);
+		// });
+		// 
+		
+		// $('#commentUp').on('click', function() {
+			
+		// });
+
+		// $('#commentDown').on('click', function() {
+		// 	var def = $.Deferred();
+		// 	$.ajax({
+		// 		url: '',
+		// 		success: def.resolve({'msg':msg, dom: $(this)})
+		// 	});
+		// });
+
+		var test = function(id) {
+			var def = $.Deferred();
+			$('#box').on('click', '#' + id, function() {
+				$.ajax({
+					url: '',
+					success: def.resolve({'msg':msg, dom: $(this)})
+				});
+			});
+		}
+
+		test('commentUp').done(function() {
+			dom.html(msg);
+		});
+		test('commentDown').done(function() {
+			dom.html(msg);
+		});
+
+
+
+	</script>
+</body>
+</html>
